@@ -7,7 +7,7 @@
 <meta name="description" content="Meal delivery for Miami's serious athletes. European chefs. Macro-precise. Launching Fall 2026 in Brickell & Edgewater." />
 <style>
   /* ============ FONT IMPORTS ============ */
-  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,700&display=swap');
 
   /* Commuters Sans (Fontspring demo) — co-located with index.html
      For production, replace with a licensed hosted version. */
@@ -19,12 +19,22 @@
     font-display: swap;
   }
 
+  /* Override: the demo font is missing @ and apostrophes (straight + smart).
+     For those characters only, fall back to a system sans. */
+  @font-face {
+    font-family: 'Commuters Sans';
+    src: local('Helvetica Neue'), local('Helvetica'), local('Arial');
+    font-weight: 400;
+    font-style: normal;
+    unicode-range: U+0027, U+0040, U+2018-2019;
+  }
+
   :root {
     --bg: #0b0b0b;
     --accent-1: #57af3c;
     --accent-2: #7cb829;
     --gradient: linear-gradient(135deg, #57af3c 0%, #7cb829 100%);
-    --serif: "Cormorant Garamond", "Times New Roman", Georgia, serif;
+    --serif: "Playfair Display", "Times New Roman", Georgia, serif;
     --sans: 'Commuters Sans', 'Helvetica Neue', Arial, sans-serif;
   }
 
@@ -59,28 +69,43 @@
 
   .logo svg path { fill: #ffffff; }
 
-  /* HERO TAGLINE — Cormorant Garamond 300, large & airy (the original elegant feel) */
+  /* HERO TAGLINE — Playfair Display 400, sized down for elegance */
   .hero-tagline {
     font-family: var(--serif);
-    font-weight: 300;
-    font-size: clamp(44px, 6.4vw, 84px);
+    font-weight: 400;
+    font-size: clamp(32px, 4.6vw, 60px);
     color: #FFFFFF;
     text-align: center;
-    line-height: 1.08;
+    line-height: 1.12;
     letter-spacing: -0.015em;
-    max-width: 14ch;
+    max-width: 16ch;
     margin: 0 auto;
   }
 
-  /* ACCENT WORD — italic gradient on "train." */
+  /* ACCENT WORD — bold italic with animated shimmer gradient on "train." */
   .accent-word {
     font-family: var(--serif);
     font-style: italic;
-    font-weight: 400;
-    background: linear-gradient(90deg, #57af3c, #7cb829);
+    font-weight: 700;
+    background: linear-gradient(
+      90deg,
+      #57af3c 0%,
+      #7cb829 20%,
+      #a3d977 40%,
+      #7cb829 60%,
+      #57af3c 80%,
+      #7cb829 100%
+    );
+    background-size: 250% 100%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    animation: train-shimmer 5s linear infinite;
+  }
+
+  @keyframes train-shimmer {
+    0%   { background-position: 250% 50%; }
+    100% { background-position: 0% 50%; }
   }
 
   /* EVERYTHING ELSE — Commuters Sans, uppercase, 0.2em tracking */
@@ -139,37 +164,40 @@
   }
 
   /* ============ ATMOSPHERIC LAYERS ============ */
-  .bloom {
-    position: fixed;
-    top: -10vh;
-    left: 50%;
-    transform: translateX(-50%);
-    width: min(140vw, 1400px);
-    height: min(140vw, 1400px);
-    pointer-events: none;
-    z-index: 0;
-    background:
-      radial-gradient(circle at 50% 30%, rgba(124, 184, 41, 0.16) 0%, rgba(87, 175, 60, 0.08) 18%, rgba(87, 175, 60, 0.03) 35%, transparent 55%);
-    filter: blur(40px);
-    animation: bloomPulse 9s ease-in-out infinite;
-  }
-
-  @keyframes bloomPulse {
-    0%, 100% { opacity: 0.85; transform: translateX(-50%) scale(1); }
-    50%      { opacity: 1;    transform: translateX(-50%) scale(1.06); }
-  }
-
-  .mesh {
+  /* Etheral Shadow — animated wobbly cloud of brand green, replaces the static bloom */
+  .ethereal {
     position: fixed;
     inset: 0;
     pointer-events: none;
-    z-index: 1;
-    background-image:
-      linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
-    background-size: 80px 80px;
-    mask-image: radial-gradient(ellipse at 50% 30%, #000 0%, rgba(0,0,0,0.6) 50%, transparent 90%);
-    -webkit-mask-image: radial-gradient(ellipse at 50% 30%, #000 0%, rgba(0,0,0,0.6) 50%, transparent 90%);
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .ethereal-inner {
+    position: absolute;
+    inset: -100px;
+    filter: url(#ethereal-filter) blur(4px);
+  }
+
+  .ethereal-shape {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(128, 128, 128, 1);
+    -webkit-mask-image: url('https://framerusercontent.com/images/ceBGguIpUU8luwByxuQz79t7To.png');
+            mask-image: url('https://framerusercontent.com/images/ceBGguIpUU8luwByxuQz79t7To.png');
+    -webkit-mask-size: cover;
+            mask-size: cover;
+    -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+            mask-position: center;
+  }
+
+  .ethereal-svg {
+    position: absolute;
+    width: 0;
+    height: 0;
+    pointer-events: none;
   }
 
   .scanlines {
@@ -483,7 +511,8 @@
   @media (prefers-reduced-motion: reduce) {
     .reveal { opacity: 1; transform: none; transition: none; }
     button[type="submit"]::before,
-    .bloom,
+    .ethereal-inner,
+    .accent-word,
     .visual-block img,
     .launch-line .pulse { animation: none !important; transition: none; }
   }
@@ -491,8 +520,23 @@
 </head>
 <body>
 
-<div class="bloom" aria-hidden="true"></div>
-<div class="mesh" aria-hidden="true"></div>
+<!-- Etheral Shadow — animated brand-green cloud (vanilla port of the React component) -->
+<svg class="ethereal-svg" aria-hidden="true">
+  <defs>
+    <filter id="ethereal-filter">
+      <feTurbulence result="undulation" numOctaves="2" baseFrequency="0.0007,0.003" seed="0" type="turbulence"/>
+      <feColorMatrix id="ethereal-hue" in="undulation" type="hueRotate" values="180"/>
+      <feColorMatrix in="dist" result="circulation" type="matrix" values="4 0 0 0 1  4 0 0 0 1  4 0 0 0 1  1 0 0 0 0"/>
+      <feDisplacementMap in="SourceGraphic" in2="circulation" scale="100" result="dist"/>
+      <feDisplacementMap in="dist" in2="undulation" scale="100" result="output"/>
+    </filter>
+  </defs>
+</svg>
+<div class="ethereal" aria-hidden="true">
+  <div class="ethereal-inner">
+    <div class="ethereal-shape"></div>
+  </div>
+</div>
 <div class="scanlines" aria-hidden="true"></div>
 
 <main>
@@ -517,7 +561,7 @@
     </h1>
 
     <p class="descriptor reveal">
-      Meal delivery for athletes &nbsp;·&nbsp; European chefs &nbsp;·&nbsp; Macro-precise
+      AI-calibrated meal delivery for athletes &nbsp;·&nbsp; European chefs &nbsp;·&nbsp; Macro-precise
     </p>
 
     <div class="waitlist" id="waitlist">
@@ -598,6 +642,23 @@
 </main>
 
 <script>
+  // Etheral Shadow — animate the SVG filter's hue-rotate to create the floating wobble effect
+  (function animateEthereal() {
+    const matrix = document.getElementById('ethereal-hue');
+    if (!matrix) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const periodMs = 8000; // one full 360° rotation every 8s
+    let start = null;
+    function step(t) {
+      if (start === null) start = t;
+      const value = ((t - start) / periodMs * 360) % 360;
+      matrix.setAttribute('values', String(value));
+      requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  })();
+
   const io = new IntersectionObserver((entries) => {
     entries.forEach((e) => {
       if (e.isIntersecting) {
