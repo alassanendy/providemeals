@@ -163,98 +163,6 @@
     text-align: center;
   }
 
-  /* JOURNEY — Form → AI → Chef → Delivery, sequential reveal between logo and tagline */
-  .journey {
-    position: relative;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    gap: clamp(14px, 2vw, 24px);
-    margin: clamp(1.25rem, 2.5vh, 1.75rem) auto 0;
-    font-family: var(--sans);
-    font-weight: 400;
-    font-size: 14px;
-    letter-spacing: 0.32em;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.6);
-    flex-wrap: wrap;
-    padding: 14px clamp(20px, 3vw, 32px);
-    isolation: isolate;
-  }
-
-  /* Wrapper to center the inline-flex .journey */
-  .journey-wrap {
-    text-align: center;
-  }
-
-  /* White frame with subtle translucent fill, fades + slides in alongside the items */
-  .journey::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border: 1px solid rgba(255, 255, 255, 0.22);
-    border-radius: 0;
-    background-color: rgba(255, 255, 255, 0.045);
-    -webkit-backdrop-filter: blur(6px);
-            backdrop-filter: blur(6px);
-    opacity: 0;
-    transform: translateY(8px);
-    transition: opacity 0.9s cubic-bezier(0.2, 0.8, 0.2, 1),
-                transform 1.6s cubic-bezier(0.2, 0.8, 0.2, 1);
-    pointer-events: none;
-    z-index: -1;
-  }
-
-  .journey.frame-active::before {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .journey > * {
-    opacity: 0;
-    transform: translateY(4px);
-    transition: opacity 0.55s cubic-bezier(0.2, 0.8, 0.2, 1),
-                transform 0.55s cubic-bezier(0.2, 0.8, 0.2, 1);
-    will-change: opacity, transform;
-  }
-
-  .journey > .visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* AI — highlighted in brand green (same gradient as the rest of the design) */
-  .journey-step.ai {
-    background: linear-gradient(90deg, #57af3c, #7cb829);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    font-weight: 600;
-  }
-
-  /* Arrow with a green sweep flowing left-to-right continuously */
-  .journey-arrow {
-    font-size: 16px;
-    font-weight: 500;
-    background: linear-gradient(
-      90deg,
-      rgba(87, 175, 60, 0.25) 0%,
-      rgba(124, 184, 41, 0.5) 25%,
-      #a3d977 50%,
-      rgba(124, 184, 41, 0.5) 75%,
-      rgba(87, 175, 60, 0.25) 100%
-    );
-    background-size: 250% 100%;
-    -webkit-background-clip: text;
-            background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: arrow-sweep 1.8s linear infinite;
-  }
-
-  @keyframes arrow-sweep {
-    0%   { background-position: 250% 50%; }
-    100% { background-position: 0% 50%; }
-  }
 
   /* ============ ATMOSPHERIC LAYERS ============ */
   /* Etheral Shadow — animated wobbly cloud of brand green, replaces the static bloom */
@@ -334,7 +242,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: clamp(2.5rem, 6vh, 4rem) 1.5rem clamp(2.5rem, 6vh, 4rem);
+    padding: clamp(1rem, 2.5vh, 1.75rem) 1.5rem clamp(2.5rem, 6vh, 4rem);
     max-width: 1100px;
     margin: 0 auto;
   }
@@ -606,7 +514,6 @@
     button[type="submit"]::before,
     .ethereal-inner,
     .accent-word,
-    .journey-arrow,
     .visual-block img,
     .launch-line .pulse { animation: none !important; transition: none; }
   }
@@ -646,19 +553,6 @@
       <path d="M1004.68,571.7c0-62.09,42.44-119.28,119.28-119.73,24.57,0,45.12,7.6,60.76,17.43v-84.89c0-31.27-5.81-35.74-17.87-41.1v-4.91l49.14-21.45,3.57,3.13v301.12c0,36.63,4.02,46.91,17.87,50.93v5.81h-39.32c-8.49,0-13.4-4.91-13.4-13.39v-25.47c-21.89,22.78-49.59,44.23-81.31,43.78-55.39-.44-98.73-48.25-98.73-111.24ZM1123.51,661.05c23.23,0,43.78-12.06,61.21-29.93v-109.46c-4.02-29.04-37.08-61.21-74.61-61.21-47.36,0-71.93,37.08-71.93,84.44,0,52.27,24.57,116.15,85.33,116.15Z"/>
       <path d="M1263.81,573.05c0-72.82,54.95-121.52,117.5-121.52,56.29,0,88.9,36.63,90.24,79.08h-174.68c-.89,6.7-1.34,13.4-1.34,20.55,0,61.21,37.97,103.2,96.05,103.2,34.4,0,58.98-15.64,79.53-38.86l4.02,4.02c-22.79,31.26-57.63,62.99-105.44,62.99s-105.88-35.75-105.88-109.46ZM1435.81,524.79c-4.47-29.93-28.59-65.23-69.25-65.23-37.97-.45-61.21,27.7-68.36,65.23h137.6Z"/>
     </svg>
-  </div>
-
-  <!-- JOURNEY — animated process flow: Form → AI → Chef → Delivery -->
-  <div class="journey-wrap">
-    <div class="journey" id="journey" aria-label="How it works">
-      <span class="journey-step">Form</span>
-      <span class="journey-arrow">&rarr;</span>
-      <span class="journey-step ai">AI</span>
-      <span class="journey-arrow">&rarr;</span>
-      <span class="journey-step">Chef</span>
-      <span class="journey-arrow">&rarr;</span>
-      <span class="journey-step">Delivery</span>
-    </div>
   </div>
 
   <!-- HERO + WAITLIST -->
@@ -749,40 +643,6 @@
 </main>
 
 <script>
-  // Journey — sequentially reveal Form → AI → Chef → Delivery + frame, then loop
-  (function animateJourney() {
-    const container = document.getElementById('journey');
-    if (!container) return;
-    const items = container.querySelectorAll(':scope > *');
-    if (!items.length) return;
-
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduced) {
-      items.forEach((el) => el.classList.add('visible'));
-      container.classList.add('frame-active');
-      return;
-    }
-
-    const stepDelay = 450;   // ms between each item appearing
-    const holdDuration = 1800; // ms all items stay visible at the end
-    const cycleGap = 600;    // ms gap between cycles (everything hidden)
-
-    function runCycle() {
-      // Frame and items appear together — frame's CSS transition (1.8s) syncs with items revealing
-      container.classList.add('frame-active');
-      items.forEach((el, i) => {
-        setTimeout(() => el.classList.add('visible'), i * stepDelay);
-      });
-      const totalReveal = items.length * stepDelay;
-      setTimeout(() => {
-        items.forEach((el) => el.classList.remove('visible'));
-        container.classList.remove('frame-active');
-        setTimeout(runCycle, cycleGap);
-      }, totalReveal + holdDuration);
-    }
-    runCycle();
-  })();
-
   // Etheral Shadow — animate the SVG filter's hue-rotate to create the floating wobble effect
   (function animateEthereal() {
     const matrix = document.getElementById('ethereal-hue');
