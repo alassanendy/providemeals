@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Provide — Personalized meal delivery for Miami's serious athletes</title>
-<meta name="description" content="Meal delivery for Miami's serious athletes. European chefs. Macro-precise. Launching Fall 2026 in Brickell & Edgewater." />
+<title>Provide — Personalized meal delivery for Miami's athletes</title>
+<meta name="description" content="Meal delivery for Miami's athletes. European chefs. Macro-precise. Launching Fall 2026 in Wynwood & Edgewater." />
 <style>
   /* ============ FONT IMPORTS ============ */
   @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,700&display=swap');
@@ -161,6 +161,99 @@
     font-size: 11px;
     color: rgba(255, 255, 255, 0.38);
     text-align: center;
+  }
+
+  /* JOURNEY — Form → AI → Chef → Delivery, sequential reveal between logo and tagline */
+  .journey {
+    position: relative;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: clamp(14px, 2vw, 24px);
+    margin: clamp(1.25rem, 2.5vh, 1.75rem) auto 0;
+    font-family: var(--sans);
+    font-weight: 400;
+    font-size: 14px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.6);
+    flex-wrap: wrap;
+    padding: 14px clamp(20px, 3vw, 32px);
+    isolation: isolate;
+  }
+
+  /* Wrapper to center the inline-flex .journey */
+  .journey-wrap {
+    text-align: center;
+  }
+
+  /* White frame with subtle translucent fill, fades + slides in alongside the items */
+  .journey::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 0;
+    background-color: rgba(255, 255, 255, 0.045);
+    -webkit-backdrop-filter: blur(6px);
+            backdrop-filter: blur(6px);
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.9s cubic-bezier(0.2, 0.8, 0.2, 1),
+                transform 1.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .journey.frame-active::before {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .journey > * {
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 0.55s cubic-bezier(0.2, 0.8, 0.2, 1),
+                transform 0.55s cubic-bezier(0.2, 0.8, 0.2, 1);
+    will-change: opacity, transform;
+  }
+
+  .journey > .visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* AI — highlighted in brand green (same gradient as the rest of the design) */
+  .journey-step.ai {
+    background: linear-gradient(90deg, #57af3c, #7cb829);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 600;
+  }
+
+  /* Arrow with a green sweep flowing left-to-right continuously */
+  .journey-arrow {
+    font-size: 16px;
+    font-weight: 500;
+    background: linear-gradient(
+      90deg,
+      rgba(87, 175, 60, 0.25) 0%,
+      rgba(124, 184, 41, 0.5) 25%,
+      #a3d977 50%,
+      rgba(124, 184, 41, 0.5) 75%,
+      rgba(87, 175, 60, 0.25) 100%
+    );
+    background-size: 250% 100%;
+    -webkit-background-clip: text;
+            background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: arrow-sweep 1.8s linear infinite;
+  }
+
+  @keyframes arrow-sweep {
+    0%   { background-position: 250% 50%; }
+    100% { background-position: 0% 50%; }
   }
 
   /* ============ ATMOSPHERIC LAYERS ============ */
@@ -513,6 +606,7 @@
     button[type="submit"]::before,
     .ethereal-inner,
     .accent-word,
+    .journey-arrow,
     .visual-block img,
     .launch-line .pulse { animation: none !important; transition: none; }
   }
@@ -554,6 +648,19 @@
     </svg>
   </div>
 
+  <!-- JOURNEY — animated process flow: Form → AI → Chef → Delivery -->
+  <div class="journey-wrap">
+    <div class="journey" id="journey" aria-label="How it works">
+      <span class="journey-step">Form</span>
+      <span class="journey-arrow">&rarr;</span>
+      <span class="journey-step ai">AI</span>
+      <span class="journey-arrow">&rarr;</span>
+      <span class="journey-step">Chef</span>
+      <span class="journey-arrow">&rarr;</span>
+      <span class="journey-step">Delivery</span>
+    </div>
+  </div>
+
   <!-- HERO + WAITLIST -->
   <section class="hero">
     <h1 class="hero-tagline reveal">
@@ -561,12 +668,12 @@
     </h1>
 
     <p class="descriptor reveal">
-      AI-calibrated meal delivery for athletes &nbsp;·&nbsp; European chefs &nbsp;·&nbsp; Macro-precise
+      For athletes &nbsp;·&nbsp; European chefs &nbsp;·&nbsp; Macro-precise
     </p>
 
     <div class="waitlist" id="waitlist">
       <div id="form-container">
-        <p class="launch-line reveal"><span class="pulse"></span>Fall 2026 — Brickell &amp; Edgewater &nbsp;·&nbsp; Limited spots</p>
+        <p class="launch-line reveal"><span class="pulse"></span>Fall 2026 — Wynwood &amp; Edgewater</p>
 
         <form id="waitlist-form" class="reveal" novalidate
               action="https://formspree.io/f/mpqbydwn"
@@ -642,6 +749,40 @@
 </main>
 
 <script>
+  // Journey — sequentially reveal Form → AI → Chef → Delivery + frame, then loop
+  (function animateJourney() {
+    const container = document.getElementById('journey');
+    if (!container) return;
+    const items = container.querySelectorAll(':scope > *');
+    if (!items.length) return;
+
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) {
+      items.forEach((el) => el.classList.add('visible'));
+      container.classList.add('frame-active');
+      return;
+    }
+
+    const stepDelay = 450;   // ms between each item appearing
+    const holdDuration = 1800; // ms all items stay visible at the end
+    const cycleGap = 600;    // ms gap between cycles (everything hidden)
+
+    function runCycle() {
+      // Frame and items appear together — frame's CSS transition (1.8s) syncs with items revealing
+      container.classList.add('frame-active');
+      items.forEach((el, i) => {
+        setTimeout(() => el.classList.add('visible'), i * stepDelay);
+      });
+      const totalReveal = items.length * stepDelay;
+      setTimeout(() => {
+        items.forEach((el) => el.classList.remove('visible'));
+        container.classList.remove('frame-active');
+        setTimeout(runCycle, cycleGap);
+      }, totalReveal + holdDuration);
+    }
+    runCycle();
+  })();
+
   // Etheral Shadow — animate the SVG filter's hue-rotate to create the floating wobble effect
   (function animateEthereal() {
     const matrix = document.getElementById('ethereal-hue');
